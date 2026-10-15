@@ -1613,7 +1613,7 @@ const CONFIG = {
   // Good afternoon / Good evening по времени у того, кто открыл сайт.
   intro: {
     enabled: true,               // false — сразу открывать главную
-    style: "letter",             // "letter" — письмо и печатная машинка, "apple" — белый экран как у iPhone
+    style: "apple",              // "apple" — белый экран как у iPhone, "letter" — письмо и печатная машинка
                                  // сравнить без правки: добавьте к адресу ?intro=apple или ?intro=letter
     lines: [
       "How are you doing, **Miss White**?",
@@ -2001,7 +2001,7 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
   var introState = null;
 
   // стиль приветствия: из CONFIG или из адреса (?intro=apple / ?intro=letter — чтобы сравнить)
-  var INTRO_STYLES = ["letter", "apple"];
+  var INTRO_STYLES = ["apple", "letter"];
   var introStyle = (function () {
     var fromUrl = "";
     try { fromUrl = (new URLSearchParams(location.search).get("intro") || "").toLowerCase(); } catch (e) { /* старый браузер */ }
