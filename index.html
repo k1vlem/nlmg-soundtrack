@@ -1165,6 +1165,96 @@ body[data-theme="character"] .byline { font-family: "Lora", Georgia, serif; font
 }
 .tv-knob::after { content: ""; position: absolute; left: 12px; top: 3px; width: 2px; height: 8px; border-radius: 1px; background: rgba(60, 30, 10, .65); transform-origin: 1px 10px; }
 .tv-knob + .tv-knob::after { transform: rotate(50deg); }
+/* аудиоплеер вместо YouTube (включается, если задан CONFIG.tabs.<вкладка>.audio.src) */
+.player-frame.is-audio { background: #a7b1b8; overflow: hidden; }
+.aud-art {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 30% at 30% 64%, rgba(226, 214, 192, .5), transparent 70%),
+    linear-gradient(to bottom, #9fabb4 0%, #b7c0c4 40%, #cbcfcc 62%, #c3c7c2 64%, #a9b1ae 65.5%, #9ba4a2 100%);
+}
+.aud-fog {
+  position: absolute;
+  left: -30%;
+  width: 160%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(238, 240, 239, .72), rgba(238, 240, 239, 0) 70%);
+  animation: drift 26s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.aud-fog-1 { top: 46%; height: 34%; }
+.aud-fog-2 { top: 60%; height: 28%; opacity: .8; animation-duration: 34s; animation-direction: alternate-reverse; }
+.is-playing .aud-fog { animation-play-state: running; }
+.aud-fence {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 20%;
+  height: 16%;
+  background:
+    linear-gradient(rgba(56, 67, 74, .5), rgba(56, 67, 74, .5)) 0 22% / 100% 1px no-repeat,
+    linear-gradient(rgba(56, 67, 74, .5), rgba(56, 67, 74, .5)) 0 62% / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 74px, rgba(56, 67, 74, .55) 74px 76px);
+}
+.aud-play {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  display: grid;
+  place-items: center;
+  width: clamp(58px, 11vw, 78px);
+  height: clamp(58px, 11vw, 78px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(248, 247, 242, .93);
+  color: #1b2630;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 12px 30px -10px rgba(20, 30, 40, .55), 0 0 0 8px rgba(248, 247, 242, .28);
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.aud-play:hover { transform: translate(-50%, -50%) scale(1.06); }
+.aud-play:focus-visible { outline: 2px solid #1b2630; outline-offset: 6px; }
+.aud-play svg { width: 40%; height: 40%; fill: currentColor; }
+.aud-play .i-play { margin-left: 8%; }
+.aud-play .i-pause, .is-playing .aud-play .i-play { display: none; }
+.is-playing .aud-play .i-pause { display: block; }
+.is-playing .aud-play { animation: aud-pulse 2.8s ease-out infinite; }
+@keyframes aud-pulse {
+  0%   { box-shadow: 0 12px 30px -10px rgba(20, 30, 40, .55), 0 0 0 8px rgba(248, 247, 242, .28), 0 0 0 8px rgba(248, 247, 242, .45); }
+  100% { box-shadow: 0 12px 30px -10px rgba(20, 30, 40, .55), 0 0 0 8px rgba(248, 247, 242, .28), 0 0 0 34px rgba(248, 247, 242, 0); }
+}
+.aud-bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: 2.4rem clamp(.85rem, 3vw, 1.5rem) clamp(.6rem, 2vw, 1rem);
+  background: linear-gradient(to top, rgba(240, 240, 236, .9), rgba(240, 240, 236, 0));
+  color: #1b2630;
+  font: 500 .95rem/1 "EB Garamond", Georgia, serif;
+  font-variant-numeric: tabular-nums;
+}
+.aud-seek {
+  --p: 0%;
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+          appearance: none;
+}
+.aud-seek::-webkit-slider-runnable-track { height: 2px; border-radius: 2px; background: linear-gradient(to right, #1b2630 var(--p), rgba(27, 38, 48, .25) var(--p)); }
+.aud-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px; margin-top: -5.5px; border: 0; border-radius: 50%; background: #1b2630; }
+.aud-seek::-moz-range-track { height: 2px; border-radius: 2px; background: rgba(27, 38, 48, .25); }
+.aud-seek::-moz-range-progress { height: 2px; border-radius: 2px; background: #1b2630; }
+.aud-seek::-moz-range-thumb { width: 13px; height: 13px; border: 0; border-radius: 50%; background: #1b2630; }
+.aud-seek:focus-visible { outline: 2px solid #1b2630; outline-offset: 4px; border-radius: 4px; }
+.aud-credit { margin: .55rem 0 0; font-size: .95rem; font-style: italic; color: var(--muted); }
+.aud-credit a { color: inherit; text-underline-offset: .2em; }
 [data-panel="character"] .ph { background: repeating-linear-gradient(-45deg, rgba(211, 161, 153, .2) 0 10px, transparent 10px 20px), #f3e8d4; }
 [data-panel="character"] .ph-mark {
   width: 54px; height: 54px;
@@ -1672,6 +1762,13 @@ Finally, the title stayed with me. Most songs on One Wayne G are simply records 
       frameCaption: "Nocturne in C-sharp minor · a reminiscence",   // подпись под «фотографией» с видео
       videoId: "m5qeuVOIbHk",
       videoStart: 0,
+      // Аудиофайл вместо YouTube — без рекламы. Пока src пустой, показывается видео из videoId.
+      // Вернуть видео: снова сделать src пустым "".
+      audio: {
+        src: "",          // путь к файлу в репозитории, например "audio/chopin-nocturne-20.mp3"
+        credit: "",       // подпись об источнике записи
+        creditUrl: ""     // ссылка на страницу записи
+      },
       essay: `
 To represent the novel as a whole, I chose Chopin's Nocturne No. 20 in C-sharp minor. Chopin wrote it in 1830 as a gift for his older sister, Ludwika, but it was not published until 1870, more than twenty years after his death. The piece is sometimes called "Reminiscence," and that word is the main reason I chose it. Never Let Me Go is not a story told in the present. It is Kathy, thirty-one years old and nearing the end of her years as a carer, looking back and trying to put her memories in order before they are gone.
 
@@ -1834,9 +1931,15 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
     var frame = panel.querySelector(".player-frame");
     var link = panel.querySelector(".yt-link");
 
-    players[key] = { id: id, start: start, frame: frame, iframe: null, apiSeen: false, playing: false };
+    players[key] = { id: id, start: start, frame: frame, iframe: null, apiSeen: false, playing: false, audio: null };
 
-    if (id) {
+    var audioCfg = cfg.audio || {};
+    if (audioCfg.src) {
+      // аудиофайл вместо видео; ссылка «Listen on YouTube» остаётся, если есть videoId
+      players[key].audio = renderAudio(key, panel, audioCfg);
+      if (id) link.href = "https://www.youtube.com/watch?v=" + id;
+      else link.hidden = true;
+    } else if (id) {
       link.href = "https://www.youtube.com/watch?v=" + id + (start ? "&t=" + start + "s" : "");
     } else {
       link.href = "https://www.youtube.com/results?search_query=" +
@@ -1848,9 +1951,76 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
   }
 
   /* ---------- YouTube: iframe создаётся при первом показе вкладки ---------- */
+  /* ---------- аудиоплеер (без YouTube и без рекламы) ---------- */
+  function formatTime(sec) {
+    if (!isFinite(sec) || sec < 0) return "–:––";
+    var m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function renderAudio(key, panel, a) {
+    var frame = panel.querySelector(".player-frame");
+    frame.classList.add("is-audio");
+    frame.innerHTML =
+      '<div class="aud-art" aria-hidden="true"><span class="aud-fog aud-fog-1"></span><span class="aud-fog aud-fog-2"></span><span class="aud-fence"></span></div>' +
+      '<button class="aud-play" type="button" aria-label="Play">' +
+        '<svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.8v14.4L19 12z"/></svg>' +
+        '<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></svg>' +
+      "</button>" +
+      '<div class="aud-bar"><span class="aud-cur">0:00</span>' +
+        '<input class="aud-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek">' +
+        '<span class="aud-dur">' + formatTime(NaN) + "</span></div>";
+
+    var audio = new Audio();
+    audio.preload = "metadata";
+    audio.src = a.src;
+    var btn = frame.querySelector(".aud-play");
+    var seek = frame.querySelector(".aud-seek");
+    var cur = frame.querySelector(".aud-cur");
+    var dur = frame.querySelector(".aud-dur");
+    var dragging = false;
+
+    function paint() {
+      var d = audio.duration, t = audio.currentTime;
+      var p = isFinite(d) && d > 0 ? t / d : 0;
+      if (!dragging) seek.value = Math.round(p * 1000);
+      seek.style.setProperty("--p", (seek.value / 10) + "%");
+      cur.textContent = formatTime(t);
+      dur.textContent = formatTime(d);
+    }
+    btn.addEventListener("click", function () {
+      if (audio.paused) { var pr = audio.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      else audio.pause();
+    });
+    audio.addEventListener("play", function () { frame.classList.add("is-playing"); btn.setAttribute("aria-label", "Pause"); });
+    audio.addEventListener("pause", function () { frame.classList.remove("is-playing"); btn.setAttribute("aria-label", "Play"); });
+    audio.addEventListener("ended", function () { audio.currentTime = 0; paint(); });
+    audio.addEventListener("timeupdate", paint);
+    audio.addEventListener("loadedmetadata", paint);
+    seek.addEventListener("input", function () {
+      dragging = true;
+      seek.style.setProperty("--p", (seek.value / 10) + "%");
+      if (isFinite(audio.duration)) cur.textContent = formatTime(seek.value / 1000 * audio.duration);
+    });
+    seek.addEventListener("change", function () {
+      dragging = false;
+      if (isFinite(audio.duration)) audio.currentTime = seek.value / 1000 * audio.duration;
+    });
+
+    if (a.credit) {
+      var credit = document.createElement("p");
+      credit.className = "aud-credit";
+      credit.innerHTML = a.creditUrl
+        ? '<a href="' + escapeHtml(a.creditUrl).replace(/"/g, "&quot;") + '" target="_blank" rel="noopener noreferrer">' + inline(a.credit) + "</a>"
+        : inline(a.credit);
+      panel.querySelector(".player").appendChild(credit);
+    }
+    return audio;
+  }
+
   function ensurePlayer(key) {
     var p = players[key];
-    if (!p || !p.id || p.iframe) return;
+    if (!p || !p.id || p.iframe || p.audio) return;
     var song = CONFIG.tabs[key].song || {};
     var params = "rel=0&playsinline=1&enablejsapi=1";
     if (p.start) params += "&start=" + p.start;
@@ -1894,6 +2064,7 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
   // останавливаем видео в скрытой вкладке
   function stopPlayer(key) {
     var p = players[key];
+    if (p && p.audio) { p.audio.pause(); return; }
     if (!p || !p.iframe) return;
     post(p.iframe, { event: "command", func: "pauseVideo", args: [] });
     // запасной вариант: если плеер не ответил на паузу — перезагружаем его
