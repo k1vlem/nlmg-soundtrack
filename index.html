@@ -2490,8 +2490,9 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
   renderSite();
   ORDER.forEach(renderPanel);
   buildIntro();
-  var startKey = keyFromHash() || "home";
-  var playIntro = startKey === "home" && (CONFIG.intro || {}).enabled !== false;
+  // приветствие показывается при каждом открытии сайта (с любой ссылкой), потом — главная
+  var playIntro = (CONFIG.intro || {}).enabled !== false;
+  var startKey = playIntro ? "home" : (keyFromHash() || "home");
   if (playIntro) { introActive = true; }
   activate(startKey, { instant: true });
   if (playIntro) startIntro();
