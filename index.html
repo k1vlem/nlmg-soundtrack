@@ -9,7 +9,7 @@
 <title>Never Let Me Go — A Soundtrack in Three Songs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@200..700&family=Geist+Mono:wght@400;500&family=Inter:wght@300..600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Geist:wght@200..700&family=Geist+Mono:wght@400;500&family=Inter:wght@300..600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap">
 <style>
 /* ============================================================
    БАЗА
@@ -150,8 +150,10 @@ body[data-theme="character"], .panel[data-panel="character"] {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
   background: #fff;
   color: #1d1d1f;
   font-family: "Inter", system-ui, sans-serif;
@@ -165,7 +167,7 @@ body[data-theme="character"], .panel[data-panel="character"] {
 .intro.is-exiting .intro-stage,
 .intro.is-exiting .intro-hint,
 .intro.is-exiting .intro-skip { opacity: 0; transform: scale(.98); transition: opacity .5s var(--ease), transform .8s var(--ease); }
-.intro-stage { position: relative; width: min(100%, 60rem); height: 70vh; height: 70dvh; }
+.intro-stage { position: relative; flex: none; width: min(100%, 60rem); height: 70vh; height: 70dvh; margin: auto 0; }
 .intro-step {
   position: absolute;
   inset: 0;
@@ -259,6 +261,72 @@ body[data-theme="character"], .panel[data-panel="character"] {
   transition: opacity .6s var(--ease);
 }
 .intro-hint.is-hidden { opacity: 0; }
+/* --- Стиль приветствия «letter»: письмо на старой бумаге, печатная машинка --- */
+.intro--letter {
+  background:
+    radial-gradient(125% 95% at 50% 42%, rgba(255, 252, 244, .6) 0%, transparent 55%, rgba(120, 88, 48, .2) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.13'/%3E%3C/svg%3E") 0 0 / 180px 180px,
+    #f3eadb;
+  color: #2b2620;
+}
+.intro--letter .intro-stage { width: 100%; height: auto; display: flex; justify-content: center; padding: 4.5rem 0 4rem; }
+.letter {
+  position: relative;
+  width: min(100% - 2 * var(--gutter), 35rem);
+  font-family: "Courier Prime", ui-monospace, monospace;
+  font-size: clamp(1.05rem, 2.7vw, 1.25rem);
+  line-height: 1.55;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1.1s var(--ease), transform 1.3s var(--ease);
+}
+.letter.is-on { opacity: 1; transform: none; }
+.letter-date { margin: 0 0 1.4rem; text-align: right; font-size: .82em; letter-spacing: .02em; color: #85796a; }
+.letter .hello { display: block; width: min(64vw, 290px); margin: 0 0 1.1rem -8px; }
+.intro--letter .hello path { stroke: #1f2c55; stroke-width: 7.5; filter: url(#ink); }
+.letter-line { margin: 0 0 .6em; }
+.letter-line .ch { visibility: hidden; }
+.letter-line .ch.on { visibility: visible; }
+.letter-line em { font-style: italic; }
+.intro--letter .grad { background: none; color: #1f2c55; font-weight: 700; -webkit-background-clip: border-box; background-clip: border-box; }
+.caret {
+  display: inline-block;
+  width: .5em;
+  height: 1.1em;
+  margin-left: .04em;
+  vertical-align: -.2em;
+  background: #1f2c55;
+  opacity: .8;
+  animation: caret 1.05s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+.letter-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  margin-top: 1.6rem;
+  padding: .85rem 1.35rem;
+  border: 1.5px solid #1f2c55;
+  border-radius: 3px;
+  background: transparent;
+  color: #1f2c55;
+  font: 700 .95rem/1 "Courier Prime", ui-monospace, monospace;
+  letter-spacing: .03em;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease), visibility 0s linear .8s, background-color .3s, color .3s;
+}
+.letter-enter.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .8s var(--ease), transform .8s var(--ease), background-color .3s, color .3s; }
+.letter-enter:hover { background: #1f2c55; color: #f3eadb; }
+.letter-enter:focus-visible { outline: 2px solid #1f2c55; outline-offset: 3px; }
+.letter-enter span { transition: transform .35s var(--ease); }
+.letter-enter:hover span { transform: translateX(4px); }
+.intro--letter .intro-skip { border-radius: 3px; border-color: rgba(43, 38, 32, .22); background: transparent; color: #6f6556; font-family: "Courier Prime", ui-monospace, monospace; }
+.intro--letter .intro-skip:hover { color: #2b2620; }
+.intro--letter .intro-hint { font-family: "Courier Prime", ui-monospace, monospace; color: #8a7e6e; }
 
 /* ============================================================
    ФОНЫ: слои сменяют друг друга плавно
@@ -1255,6 +1323,10 @@ body[data-theme="character"] .site-footer { font-family: "Lora", Georgia, serif;
     <div class="intro-step" data-step="hello">
       <svg class="hello" viewBox="0 0 440 200" role="img" aria-label="hello">
         <defs>
+          <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8"/>
+          </filter>
           <linearGradient id="hello-gradient" x1="0" x2="1" y1="0" y2="0">
             <stop offset="0" stop-color="#1f4a4a"/>
             <stop offset=".45" stop-color="#5f7d93"/>
@@ -1523,14 +1595,17 @@ const CONFIG = {
     footer: "A soundtrack for Kazuo Ishiguro's *Never Let Me Go* (2005). Videos are embedded from YouTube in privacy-enhanced mode; all music belongs to its rights holders."
   },
 
-  // Приветствие на белом экране при открытии сайта.
-  // {greeting} сам станет Good morning / Good afternoon / Good evening
-  // по времени у того, кто открыл сайт.
+  // Приветствие при открытии сайта.
+  // Если вставить в строку {greeting}, оно само станет Good morning /
+  // Good afternoon / Good evening по времени у того, кто открыл сайт.
   intro: {
     enabled: true,               // false — сразу открывать главную
+    style: "letter",             // "letter" — письмо и печатная машинка, "apple" — белый экран как у iPhone
+                                 // сравнить без правки: добавьте к адресу ?intro=apple или ?intro=letter
     lines: [
-      "{greeting}, **Miss White**.",
-      "My name is **Miras Abdraman**.",
+      "How are you doing, **Miss White**?",
+      "I hope you are doing well.",
+      "It's me, **Miras Abdraman**.",
       "For this project, I decided to make a website.",
       "So here it is: my website for *Never Let Me Go*."
     ],
@@ -1912,6 +1987,18 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
   var introHint = intro.querySelector(".intro-hint");
   var introState = null;
 
+  // стиль приветствия: из CONFIG или из адреса (?intro=apple / ?intro=letter — чтобы сравнить)
+  var INTRO_STYLES = ["letter", "apple"];
+  var introStyle = (function () {
+    var fromUrl = "";
+    try { fromUrl = (new URLSearchParams(location.search).get("intro") || "").toLowerCase(); } catch (e) { /* старый браузер */ }
+    var fromConfig = String((CONFIG.intro || {}).style || "").toLowerCase();
+    if (INTRO_STYLES.indexOf(fromUrl) > -1) return fromUrl;
+    return INTRO_STYLES.indexOf(fromConfig) > -1 ? fromConfig : INTRO_STYLES[0];
+  })();
+
+  function slice(list) { return Array.prototype.slice.call(list); }
+
   function greetingWord() {
     var h = new Date().getHours();
     if (h >= 5 && h < 12) return "Good morning";
@@ -1921,78 +2008,127 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
 
   function buildIntro() {
     var cfg = CONFIG.intro || {};
-    var lines = cfg.lines || [];
+    var lines = (cfg.lines || []).map(function (t) { return String(t).replace("{greeting}", greetingWord()); });
+    intro.classList.add("intro--" + introStyle);
+    if (introStyle === "apple") buildAppleIntro(lines, cfg);
+    else buildLetterIntro(lines, cfg);
+    var coarse = window.matchMedia("(pointer: coarse)").matches;
+    introHint.textContent = (coarse ? cfg.hintTouch : cfg.hint) || "";
+  }
+
+  function enterButton(cfg, className) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = className;
+    btn.innerHTML = escapeHtml(cfg.enterLabel || "Enter") + ' <span aria-hidden="true">→</span>';
+    return btn;
+  }
+
+  // стиль «apple»: фразы по одной в центре белого экрана
+  function buildAppleIntro(lines, cfg) {
     lines.forEach(function (text, n) {
       var step = document.createElement("div");
       step.className = "intro-step";
       var p = document.createElement("p");
       p.className = "intro-line";
-      p.innerHTML = inline(String(text).replace("{greeting}", greetingWord()));
+      p.innerHTML = inline(text);
       step.appendChild(p);
-      if (n === lines.length - 1) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "intro-enter";
-        btn.innerHTML = escapeHtml(cfg.enterLabel || "Enter") + ' <span aria-hidden="true">→</span>';
-        step.appendChild(btn);
-      }
+      if (n === lines.length - 1) step.appendChild(enterButton(cfg, "intro-enter"));
       introStage.appendChild(step);
     });
-    var coarse = window.matchMedia("(pointer: coarse)").matches;
-    introHint.textContent = (coarse ? cfg.hintTouch : cfg.hint) || "";
   }
 
-  function drawHello() {
+  // каждая буква — отдельный span: текст печатается, не сдвигая строки
+  function wrapChars(el) {
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (node) {
+      var frag = document.createDocumentFragment();
+      Array.prototype.forEach.call(node.nodeValue, function (ch) {
+        var s = document.createElement("span");
+        s.className = "ch";
+        s.textContent = ch;
+        frag.appendChild(s);
+      });
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  // стиль «letter»: письмо на бумаге, строки печатаются как на машинке
+  function buildLetterIntro(lines, cfg) {
+    var helloStep = intro.querySelector('[data-step="hello"]');
+    var hello = intro.querySelector(".hello");
+    var letter = document.createElement("div");
+    letter.className = "letter";
+
+    var sr = document.createElement("p");   // полный текст для экранных чтецов
+    sr.className = "sr-only";
+    sr.textContent = ["hello."].concat(lines.map(function (t) { return smarten(plain(t)); })).join(" ");
+    letter.appendChild(sr);
+
+    var date = document.createElement("p");
+    date.className = "letter-date";
+    date.setAttribute("aria-hidden", "true");
+    date.textContent = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    letter.appendChild(date);
+
+    hello.setAttribute("aria-hidden", "true");
+    letter.appendChild(hello);
+    helloStep.parentNode.removeChild(helloStep);
+
+    lines.forEach(function (text) {
+      var p = document.createElement("p");
+      p.className = "letter-line";
+      p.setAttribute("aria-hidden", "true");
+      p.innerHTML = inline(text);
+      wrapChars(p);
+      letter.appendChild(p);
+    });
+    letter.appendChild(enterButton(cfg, "letter-enter"));
+    introStage.appendChild(letter);
+  }
+
+  // seconds = 0 — показать «hello» сразу, без анимации
+  function drawHello(seconds) {
+    var path = intro.querySelector(".hello path");
+    if (!path || !path.getTotalLength) return;
+    var animate = seconds > 0 && !reduceMotion.matches;
+    var len = Math.ceil(path.getTotalLength());
+    path.style.transition = "none";
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = animate ? len : 0;
+    path.getBoundingClientRect();   // применяем стартовое состояние
+    if (animate) {
+      path.style.transition = "stroke-dashoffset " + seconds + "s cubic-bezier(.55, .05, .35, 1)";
+      path.style.strokeDashoffset = 0;
+    }
+  }
+  function hideHello() {
     var path = intro.querySelector(".hello path");
     if (!path || !path.getTotalLength) return;
     var len = Math.ceil(path.getTotalLength());
     path.style.transition = "none";
     path.style.strokeDasharray = len;
-    path.style.strokeDashoffset = reduceMotion.matches ? 0 : len;
-    path.getBoundingClientRect();   // применяем стартовое состояние
-    path.style.transition = "stroke-dashoffset 2.8s cubic-bezier(.55, .05, .35, 1)";
-    path.style.strokeDashoffset = 0;
+    path.style.strokeDashoffset = len;
   }
 
   function startIntro() {
-    var steps = Array.prototype.slice.call(intro.querySelectorAll(".intro-step"));
-    var state = { i: -1, timer: null, done: false };
+    if (introState && introState.cleanup) introState.cleanup();
+    var state = { done: false };
     introState = state;
     introActive = true;
     homeEl.hidden = true;
     document.documentElement.classList.add("intro-open");
-    steps.forEach(function (s) { s.classList.remove("is-on", "is-off"); });
     introHint.classList.remove("is-hidden");
     intro.classList.remove("is-exiting");
     intro.hidden = false;
     intro.focus({ preventScroll: true });
 
-    function duration(n) {
-      if (n === 0) return 3900;   // «hello» рисуется ~2.8 с
-      return 1900 + steps[n].textContent.length * 38;
-    }
-    function show(n) {
-      clearTimeout(state.timer);
-      if (state.i >= 0) { steps[state.i].classList.remove("is-on"); steps[state.i].classList.add("is-off"); }
-      state.i = n;
-      steps[n].classList.remove("is-off");
-      steps[n].classList.add("is-on");
-      if (n === 0) drawHello();
-      if (n < steps.length - 1) {
-        state.timer = setTimeout(next, duration(n));
-      } else {
-        introHint.classList.add("is-hidden");
-      }
-    }
-    function next() {
-      if (state.done) return;
-      if (state.i < steps.length - 1) show(state.i + 1);
-      else finish();
-    }
-    function finish() {
+    state.finish = function () {
       if (state.done) return;
       state.done = true;
-      clearTimeout(state.timer);
+      if (state.cleanup) state.cleanup();
       intro.classList.add("is-exiting");
       introActive = false;
       if (current === "home") homeEl.hidden = false;   // запускаем появление главной
@@ -2002,15 +2138,121 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
         document.documentElement.classList.remove("intro-open");
         if (current === "home") document.getElementById("home-title").focus({ preventScroll: true });
       }, 1300);
+    };
+
+    if (introStyle === "apple") runAppleIntro(state);
+    else runLetterIntro(state);
+  }
+
+  function runAppleIntro(state) {
+    var steps = slice(intro.querySelectorAll(".intro-step"));
+    var i = -1, timer = null;
+    steps.forEach(function (s) { s.classList.remove("is-on", "is-off"); });
+
+    function duration(n) {
+      if (n === 0) return 3900;   // «hello» рисуется ~2.8 с
+      return 1900 + steps[n].textContent.length * 38;
     }
-    state.next = next;
-    state.finish = finish;
-    state.timer = setTimeout(function () { show(0); }, 350);
+    function show(n) {
+      clearTimeout(timer);
+      if (i >= 0) { steps[i].classList.remove("is-on"); steps[i].classList.add("is-off"); }
+      i = n;
+      steps[n].classList.remove("is-off");
+      steps[n].classList.add("is-on");
+      if (n === 0) drawHello(2.8);
+      if (n < steps.length - 1) timer = setTimeout(state.next, duration(n));
+      else introHint.classList.add("is-hidden");
+    }
+    state.next = function () {
+      if (state.done) return;
+      if (i < steps.length - 1) show(i + 1);
+      else state.finish();
+    };
+    state.cleanup = function () { clearTimeout(timer); };
+    timer = setTimeout(function () { show(0); }, 350);
+  }
+
+  function runLetterIntro(state) {
+    var letter = intro.querySelector(".letter");
+    var lines = slice(letter.querySelectorAll(".letter-line"));
+    var btn = letter.querySelector(".letter-enter");
+    var caret = document.createElement("span");
+    caret.className = "caret";
+    var timer = null, k = -1, chars = [], idx = 0;
+    var phase = "start";   // start → hello → typing → pause → ready
+
+    // сброс (на случай повторного показа)
+    slice(letter.querySelectorAll(".caret")).forEach(function (c) { c.parentNode.removeChild(c); });
+    slice(letter.querySelectorAll(".ch.on")).forEach(function (c) { c.classList.remove("on"); });
+    letter.classList.remove("is-on");
+    btn.classList.remove("is-on");
+    hideHello();
+
+    function wait(fn, ms) {
+      clearTimeout(timer);
+      timer = setTimeout(fn, reduceMotion.matches ? Math.min(ms, 150) : ms);
+    }
+    function typeLine(n) {
+      phase = "typing";
+      k = n;
+      idx = 0;
+      chars = slice(lines[n].querySelectorAll(".ch"));
+      lines[n].insertBefore(caret, lines[n].firstChild);
+      tick();
+    }
+    function tick() {
+      if (idx >= chars.length) { lineDone(); return; }
+      var c = chars[idx++];
+      c.classList.add("on");
+      c.parentNode.insertBefore(caret, c.nextSibling);
+      var delay = 28 + Math.random() * 36;
+      if (/[.,:?!]/.test(c.textContent)) delay += 260;
+      timer = setTimeout(tick, reduceMotion.matches ? 0 : delay);
+    }
+    function lineDone() {
+      phase = "pause";
+      if (k < lines.length - 1) wait(function () { typeLine(k + 1); }, 750);
+      else wait(showEnter, 500);
+    }
+    function showEnter() {
+      phase = "ready";
+      btn.classList.add("is-on");
+      introHint.classList.add("is-hidden");
+    }
+
+    state.next = function () {
+      if (state.done) return;
+      clearTimeout(timer);
+      if (phase === "start" || phase === "hello") {
+        letter.classList.add("is-on");
+        drawHello(0);
+        typeLine(0);
+      } else if (phase === "typing") {          // допечатать строку сразу
+        chars.slice(idx).forEach(function (c) { c.classList.add("on"); });
+        idx = chars.length;
+        var last = chars[chars.length - 1];
+        if (last) last.parentNode.insertBefore(caret, last.nextSibling);
+        lineDone();
+      } else if (phase === "pause") {
+        if (k < lines.length - 1) typeLine(k + 1);
+        else showEnter();
+      } else {
+        state.finish();
+      }
+    };
+    state.cleanup = function () { clearTimeout(timer); };
+
+    timer = setTimeout(function () {
+      phase = "hello";
+      letter.classList.add("is-on");
+      drawHello(2.4);
+      wait(function () { typeLine(0); }, 3100);
+    }, 350);
   }
 
   intro.addEventListener("click", function (e) {
     if (!introState || introState.done) return;
-    if (e.target.closest(".intro-skip") || e.target.closest(".intro-enter")) { introState.finish(); return; }
+    if (e.target.closest(".intro-skip, .intro-enter, .letter-enter")) { introState.finish(); return; }
     introState.next();
   });
   intro.addEventListener("keydown", function (e) {
