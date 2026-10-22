@@ -339,6 +339,21 @@ body[data-theme="character"], .panel[data-panel="character"] {
 .letter-enter:hover span { transform: translateX(4px); }
 .intro--letter .intro-skip { border-radius: 3px; border-color: rgba(43, 38, 32, .22); background: transparent; color: #6f6556; font-family: "Courier Prime", ui-monospace, monospace; }
 .intro--letter .intro-skip:hover { color: #2b2620; }
+/* --- стиль «apple»: прежняя анимация, шрифт Cormorant Garamond --- */
+.intro--apple .intro-line {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.1rem, 6.2vw, 3.9rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -.005em;
+  max-width: 16em;
+}
+.intro--apple .intro-line em { font-family: inherit; font-size: 1em; }
+.intro--apple .grad { font-style: italic; }
+.intro--apple .intro-enter { font: 600 1.15rem/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .04em; padding: 1rem 1.9rem; }
+.intro--apple .intro-skip { font-family: "Cormorant Garamond", Georgia, serif; font-size: .95rem; font-weight: 600; letter-spacing: .03em; }
+.intro--apple .intro-hint { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1rem; font-style: italic; }
+
 /* --- Стиль приветствия «memory»: ночь, туман, забор; hello из светящейся пыли воспоминаний --- */
 .intro--memory {
   background: radial-gradient(120% 85% at 50% 115%, #1d2d35 0%, #0d171b 52%, #070b0d 100%);
@@ -2055,7 +2070,7 @@ const CONFIG = {
   // Good afternoon / Good evening по времени у того, кто открыл сайт.
   intro: {
     enabled: true,               // false — сразу открывать главную
-    style: "memory",             // "memory" — ночь, туман и hello из светящейся пыли; "apple" — белый экран как у iPhone; "letter" — письмо и машинка
+    style: "apple",              // "apple" — белый экран, hello от руки; "memory" — ночь и hello из пыли; "letter" — письмо и машинка
                                  // сравнить без правки: добавьте к адресу ?intro=apple или ?intro=letter
     lines: [
       "How are you doing, **Miss White**?",
@@ -2547,7 +2562,7 @@ I picked Beyoncé's version because it is a newer voice singing an older song, r
   var introState = null;
 
   // стиль приветствия: из CONFIG или из адреса (?intro=apple / ?intro=letter — чтобы сравнить)
-  var INTRO_STYLES = ["memory", "apple", "letter"];
+  var INTRO_STYLES = ["apple", "memory", "letter"];
   var introStyle = (function () {
     var fromUrl = "";
     try { fromUrl = (new URLSearchParams(location.search).get("intro") || "").toLowerCase(); } catch (e) { /* старый браузер */ }
